@@ -1,0 +1,398 @@
+/* ========================================
+   ✨ DARK LUXURY THEME - Resume Builder
+   ======================================== */
+@import './editor.css';
+@import './preview.css';
+
+:root {
+    /* 🎨 Dark Luxury Color Palette */
+    --color-bg-dark: #0a0a0f;
+    --color-bg-card: #12121a;
+    --color-bg-elevated: #1a1a24;
+
+    /* Neon Accent Gradient */
+    --color-accent-1: #6366f1;
+    /* Indigo */
+    --color-accent-2: #8b5cf6;
+    /* Violet */
+    --color-accent-3: #a855f7;
+    /* Purple */
+    --color-glow: rgba(139, 92, 246, 0.4);
+
+    --color-text-primary: #f8fafc;
+    --color-text-secondary: #94a3b8;
+    --color-text-muted: #64748b;
+
+    --color-border: rgba(255, 255, 255, 0.08);
+    --color-border-hover: rgba(255, 255, 255, 0.15);
+    --color-input-bg: rgba(255, 255, 255, 0.04);
+
+    /* Resume Colors (Light for Contrast) */
+    --color-resume-bg: #ffffff;
+    --color-resume-text: #1e293b;
+    --color-resume-accent: #4f46e5;
+
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2.5rem;
+
+    /* Typography */
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+    /* UI Elements */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+
+    --shadow-glow: 0 0 20px var(--color-glow);
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+    --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    /* A4 Paper */
+    --a4-width: 210mm;
+    --a4-height: 297mm;
+}
+
+/* ========== RESET & BASE ========== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+}
+
+/* ========== LAYOUT UTILITIES ========== */
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.gap-md {
+    gap: var(--spacing-md);
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.gap-3 {
+    gap: 0.75rem;
+}
+
+/* ========== PREMIUM BUTTONS ========== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    cursor: pointer;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-accent-1), var(--color-accent-2), var(--color-accent-3));
+    background-size: 200% 200%;
+    color: white;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--color-border-hover);
+    color: var(--color-text-primary);
+}
+
+.btn-secondary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ========== APP STRUCTURE ========== */
+.app-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background: var(--color-bg-dark);
+    /* Subtle grid pattern */
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+}
+
+/* ========== EDITOR PANEL ========== */
+.editor-panel {
+    width: 500px;
+    min-width: 440px;
+    max-width: 560px;
+    background: var(--color-bg-card);
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    z-index: 20;
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* Glow accent line at the top */
+.editor-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-accent-1), var(--color-accent-2), var(--color-accent-3));
+}
+
+.editor-header {
+    padding: 1rem 1.25rem;
+    background: var(--color-bg-card);
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: 0.875rem;
+}
+
+/* 头部第一行：标题 + 按钮 */
+.header-row-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.editor-header h1 {
+    font-size: 1.125rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #f8fafc, #cbd5e1);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* 模板选择器 */
+.template-switcher {
+    display: flex;
+    gap: 0.375rem;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.375rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+}
+
+.template-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.template-btn:hover {
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.template-btn.active {
+    background: linear-gradient(135deg, var(--color-accent-1), var(--color-accent-2));
+    color: white;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.header-icon {
+    color: var(--color-accent-1);
+}
+
+.editor-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+
+.scroll-container {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+}
+
+.scroll-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ========== PREVIEW PANEL ========== */
+.preview-panel {
+    flex: 1;
+    background: var(--color-bg-dark);
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 3rem;
+    /* Radial gradient glow behind resume */
+    background-image: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+}
+
+.preview-container {
+    padding-bottom: 4rem;
+}
+
+.a4-wrapper {
+    width: var(--a4-width);
+    min-height: var(--a4-height);
+    background: white;
+    box-shadow: var(--shadow-elevated), 0 0 60px rgba(139, 92, 246, 0.15);
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.shadow-lg {
+    box-shadow: var(--shadow-elevated);
+}
+
+/* ========== PRINT STYLES ========== */
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    body {
+        background: white !important;
+    }
+
+    .editor-panel {
+        display: none !important;
+    }
+
+    .preview-panel {
+        padding: 0;
+        background: white;
+    }
+
+    .app-container {
+        height: auto;
+        width: auto;
+        overflow: visible;
+        background: white;
+    }
+
+    .a4-wrapper {
+        width: 100%;
+        box-shadow: none;
+        border-radius: 0;
+    }
+}

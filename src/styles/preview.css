@@ -1,0 +1,618 @@
+/* ========================================
+   ✨ PREMIUM RESUME STYLES
+   Modern & Professional Layout
+   ======================================== */
+
+.resume-content {
+    width: 100%;
+    height: 100%;
+    padding: 48px 56px;
+    background: #ffffff;
+    color: #1e293b;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ========== HEADER ========== */
+.resume-header {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 3px solid #4f46e5;
+    position: relative;
+}
+
+.resume-header-content {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.resume-photo {
+    flex-shrink: 0;
+}
+
+.resume-photo img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4f46e5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.resume-header-text {
+    flex: 1;
+}
+
+.resume-name {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 8px;
+}
+
+.resume-role {
+    font-size: 1.125rem;
+    color: #4f46e5;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 16px;
+}
+
+.resume-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    font-size: 0.875rem;
+    color: #475569;
+}
+
+.resume-contact span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ========== BODY LAYOUT ========== */
+.resume-body {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 40px;
+    flex: 1;
+}
+
+.resume-main {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.resume-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-left: 24px;
+    border-left: 1px solid #e2e8f0;
+}
+
+/* ========== SECTIONS ========== */
+.resume-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.resume-section-title {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #4f46e5;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* ========== EXPERIENCE ITEMS ========== */
+.resume-item {
+    margin-bottom: 20px;
+}
+
+.resume-item:last-child {
+    margin-bottom: 0;
+}
+
+.resume-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+}
+
+.resume-item-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.resume-item-date {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 500;
+    font-feature-settings: "tnum";
+    white-space: nowrap;
+}
+
+.resume-item-subtitle {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 8px;
+}
+
+.resume-text {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: #334155;
+    white-space: pre-wrap;
+}
+
+/* ========== SKILLS ========== */
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-tag {
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    color: #4338ca;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #c7d2fe;
+}
+
+
+/* ========================================
+   🎨 THEME VARIATIONS
+   ======================================== */
+
+/* -------- 🏛 CLASSIC THEME -------- */
+.resume-classic {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #333;
+}
+
+.resume-classic .resume-header {
+    border-bottom: 1px solid #000;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+.resume-classic .resume-header-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+}
+
+.resume-classic .resume-photo img {
+    border: 1px solid #ddd;
+    box-shadow: none;
+    width: 80px;
+    height: 80px;
+}
+
+.resume-classic .resume-name {
+    font-family: 'Times New Roman', serif;
+    color: #000;
+    font-size: 2.2rem;
+    margin-bottom: 4px;
+}
+
+.resume-classic .resume-role {
+    color: #444;
+    font-size: 1rem;
+    font-weight: normal;
+    font-style: italic;
+    margin-bottom: 12px;
+}
+
+.resume-classic .resume-contact {
+    justify-content: center;
+    color: #555;
+    gap: 12px;
+}
+
+.resume-classic .resume-contact span {
+    gap: 4px;
+}
+
+.resume-classic .resume-body {
+    grid-template-columns: 1fr;
+    /* Single column layout mostly */
+    gap: 24px;
+}
+
+.resume-classic .resume-section-title {
+    text-align: center;
+    border-bottom: 1px solid #000;
+    color: #000;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+}
+
+.resume-classic .resume-item-title {
+    color: #000;
+}
+
+.resume-classic .skill-tag {
+    background: none;
+    border: 1px solid #999;
+    color: #333;
+    border-radius: 20px;
+}
+
+.resume-classic .resume-aside {
+    border-left: none;
+    padding-left: 0;
+    order: 10;
+    /* Move to bottom if single column */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Two columns for aside info at bottom */
+    gap: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+
+/* -------- 📑 SIDEBAR THEME -------- */
+.resume-sidebar {
+    padding: 0;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: auto 1fr;
+}
+
+.resume-sidebar .resume-header {
+    grid-column: 2;
+    padding: 48px 48px 20px 48px;
+    border-bottom: none;
+    margin-bottom: 0;
+    background: #fff;
+}
+
+.resume-sidebar .resume-header-content {
+    flex-direction: row-reverse;
+    /* Photo on right */
+    justify-content: space-between;
+}
+
+.resume-sidebar .resume-body {
+    display: contents;
+    /* Let children participate in main grid */
+}
+
+/* Left Sidebar Area */
+.resume-sidebar .resume-aside {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 48px 32px;
+    border-left: none;
+    gap: 40px;
+    height: 100%;
+}
+
+.resume-sidebar .resume-aside .resume-section-title {
+    color: #94a3b8;
+    border-bottom-color: #334155;
+}
+
+.resume-sidebar .resume-aside .resume-item-title {
+    color: #fff;
+}
+
+.resume-sidebar .resume-aside .resume-item-subtitle,
+.resume-sidebar .resume-aside .resume-item-date {
+    color: #cbd5e1;
+}
+
+.resume-sidebar .skill-tag {
+    background: #334155;
+    color: #e2e8f0;
+    border-color: #475569;
+}
+
+/* Main Content Area */
+.resume-sidebar .resume-main {
+    grid-column: 2;
+    padding: 0 48px 48px 48px;
+}
+
+.resume-sidebar .resume-role {
+    color: #0f172a;
+    font-weight: 500;
+}
+
+.resume-sidebar .resume-section-title {
+    color: #0f172a;
+    border-bottom: 2px solid #0f172a;
+}
+
+/* Fix contact info in sidebar mode to be less intrusive in header or move to sidebar?
+   Let's keep it in header for now but make it work. */
+.resume-sidebar .resume-header-text .resume-contact {
+    display: none;
+    /* Hide top contact, maybe user wants it in sidebar? */
+}
+
+/* We need to inject contact info into sidebar for this layout... 
+   LIMITATION: DOM structure puts contact in header. 
+   CSS-only fix: We can't move DOM. 
+   Alternative: Keep contact in header but style it. */
+.resume-sidebar .resume-header-text .resume-contact {
+    display: flex;
+    margin-top: 8px;
+}
+
+
+/* ========== PRINT OPTIMIZATIONS ========== */
+@media print {
+    .resume-content {
+        padding: 48px 56px;
+        /* Reset padding for print */
+    }
+
+    .resume-sidebar {
+        padding: 0;
+        /* Sidebar needs 0 padding on root to let grid work */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Ensure background colors print */
+    .resume-sidebar .resume-aside {
+        background: #1e293b !important;
+        color: #e2e8f0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Creative theme backgrounds */
+    .resume-creative .resume-header,
+    .resume-creative .resume-section-title,
+    .resume-creative .resume-item::before,
+    .resume-creative .skill-tag {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .resume-header {
+        border-bottom-color: #4f46e5 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .resume-section-title {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .skill-tag {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+
+/* -------- 🎨 CREATIVE THEME -------- */
+.resume-creative {
+    padding: 0;
+    background: #fff;
+    color: #1a1a1a;
+}
+
+.resume-creative .resume-header {
+    background: #111827;
+    color: #fff;
+    padding: 48px 56px;
+    margin-bottom: 40px;
+    border-bottom: 6px solid #f43f5e;
+    /* Vibrant Accent */
+}
+
+.resume-creative .resume-name {
+    color: #fff;
+    font-size: 3rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+}
+
+.resume-creative .resume-role {
+    color: #f43f5e;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.resume-creative .resume-contact {
+    color: #9ca3af;
+    font-weight: 500;
+}
+
+.resume-creative .resume-contact span {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.resume-creative .resume-section-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #111827;
+    border-bottom: 4px solid #111827;
+    padding-bottom: 4px;
+    margin-bottom: 24px;
+    text-transform: none;
+    letter-spacing: -0.03em;
+    display: inline-block;
+    /* Only underline text */
+    width: auto;
+}
+
+.resume-creative .resume-item {
+    position: relative;
+    padding-left: 20px;
+    border-left: 2px solid #e5e7eb;
+}
+
+.resume-creative .resume-item::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    background: #f43f5e;
+    border-radius: 50%;
+}
+
+.resume-creative .resume-item-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.resume-creative .skill-tag {
+    background: #111827;
+    color: #fff;
+    border: none;
+    border-radius: 0;
+    font-weight: 700;
+    box-shadow: 4px 4px 0 #f43f5e;
+    /* Retro shadow */
+    transition: transform 0.2s;
+}
+
+/* -------- 🍃 MINIMAL THEME -------- */
+.resume-minimal {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #333;
+}
+
+.resume-minimal .resume-header {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 48px;
+    text-align: left;
+}
+
+.resume-minimal .resume-header-content {
+    align-items: flex-end;
+    /* Align bottom */
+}
+
+.resume-minimal .resume-photo {
+    display: none;
+    /* Often minimal resumes skip photo or make it very subtle */
+}
+
+.resume-minimal .resume-name {
+    font-weight: 300;
+    font-size: 3.5rem;
+    letter-spacing: -0.05em;
+    color: #000;
+    margin-bottom: 4px;
+}
+
+.resume-minimal .resume-role {
+    font-size: 1rem;
+    color: #666;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+}
+
+.resume-minimal .resume-contact {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #888;
+    border-top: 1px solid #eee;
+    padding-top: 16px;
+    width: 100%;
+}
+
+.resume-minimal .resume-section-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    border-bottom: 1px solid #000;
+    margin-bottom: 24px;
+    padding-bottom: 8px;
+}
+
+.resume-minimal .resume-body {
+    grid-template-columns: 1fr 200px;
+    /* Wider main area */
+    gap: 64px;
+}
+
+.resume-minimal .resume-item {
+    margin-bottom: 32px;
+}
+
+.resume-minimal .resume-item-header {
+    margin-bottom: 2px;
+}
+
+.resume-minimal .resume-item-title {
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.resume-minimal .resume-item-subtitle {
+    font-style: italic;
+    font-family: serif;
+    /* Contrast font */
+    color: #555;
+}
+
+.resume-minimal .resume-text {
+    color: #444;
+    line-height: 1.8;
+}
+
+.resume-minimal .skill-tags {
+    flex-direction: column;
+    /* List style skills */
+    gap: 4px;
+}
+
+.resume-minimal .skill-tag {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #444;
+    font-weight: 400;
+    font-size: 0.85rem;
+    display: block;
+}
+
+.resume-minimal .resume-aside {
+    border-left: none;
+    padding-left: 0;
+}
