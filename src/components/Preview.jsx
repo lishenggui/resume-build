@@ -1,6 +1,8 @@
 import React, { forwardRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Preview = forwardRef(({ data, template = 'modern', accentColor = '#4f46e5' }, ref) => {
+    const { t } = useTranslation();
     const { personal, experience, education, skills, projects, certifications } = data;
 
     // 将主题色应用为 CSS 变量
@@ -42,7 +44,7 @@ const Preview = forwardRef(({ data, template = 'modern', accentColor = '#4f46e5'
                     {/* Summary */}
                     {personal.summary && (
                         <section className="resume-section">
-                            <h3 className="resume-section-title">个人简介</h3>
+                            <h3 className="resume-section-title">{t('editor.summary')}</h3>
                             <p className="resume-text">
                                 {personal.summary}
                             </p>
@@ -52,7 +54,7 @@ const Preview = forwardRef(({ data, template = 'modern', accentColor = '#4f46e5'
                     {/* Experience */}
                     {experience && experience.length > 0 && (
                         <section className="resume-section">
-                            <h3 className="resume-section-title">工作经历</h3>
+                            <h3 className="resume-section-title">{t('editor.experience')}</h3>
                             <div>
                                 {experience.map(exp => (
                                     <div key={exp.id} className="resume-item">
@@ -73,7 +75,7 @@ const Preview = forwardRef(({ data, template = 'modern', accentColor = '#4f46e5'
                     {/* Projects */}
                     {projects && projects.length > 0 && (
                         <section className="resume-section">
-                            <h3 className="resume-section-title">项目经历</h3>
+                            <h3 className="resume-section-title">{t('editor.projects')}</h3>
                             <div>
                                 {projects.map(project => (
                                     <div key={project.id} className="resume-item">
@@ -104,7 +106,7 @@ const Preview = forwardRef(({ data, template = 'modern', accentColor = '#4f46e5'
                     {/* Education */}
                     {education && education.length > 0 && (
                         <section className="resume-section">
-                            <h3 className="resume-section-title">教育背景</h3>
+                            <h3 className="resume-section-title">{t('editor.education')}</h3>
                             <div>
                                 {education.map(edu => (
                                     <div key={edu.id} className="resume-item">
@@ -120,7 +122,7 @@ const Preview = forwardRef(({ data, template = 'modern', accentColor = '#4f46e5'
                     {/* Certifications */}
                     {certifications && certifications.length > 0 && (
                         <section className="resume-section">
-                            <h3 className="resume-section-title">证书荣誉</h3>
+                            <h3 className="resume-section-title">{t('editor.certifications')}</h3>
                             <div>
                                 {certifications.map(cert => (
                                     <div key={cert.id} className="resume-item">
@@ -138,7 +140,7 @@ const Preview = forwardRef(({ data, template = 'modern', accentColor = '#4f46e5'
                     {/* Skills */}
                     {skills && skills.length > 0 && (
                         <section className="resume-section">
-                            <h3 className="resume-section-title">技能专长</h3>
+                            <h3 className="resume-section-title">{t('editor.skills')}</h3>
                             <div className="skill-tags">
                                 {skills.map((skill, index) => (
                                     <span key={index} className="skill-tag">

@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import html2pdf from 'html2pdf.js';
 import mammoth from 'mammoth';
-import { Download, LayoutTemplate, Upload, FileDown, FileText, Palette, Columns, Monitor, Type } from 'lucide-react';
+import { Download, LayoutTemplate, Upload, FileDown, FileText, Palette, Columns, Monitor, Type, Globe, RotateCcw } from 'lucide-react';
 import JSZip from 'jszip';
 import { initialResumeState } from './data/initialState';
+import { initialResumeStateEn } from './data/initialStateEn';
 import { parseDocxContent } from './utils/docxParser';
 import Editor from './components/Editor';
 import Preview from './components/Preview';
@@ -12,6 +14,7 @@ import Modal from './components/Modal';
 import { exportToDocx } from './utils/exportToDocx';
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [resumeData, setResumeData] = useState(() => {
     const saved = localStorage.getItem('resumeData');
     return saved ? JSON.parse(saved) : initialResumeState;
@@ -67,42 +70,50 @@ function App() {
   // 重置功能
   const handleReset = () => {
     showModal({
-      title: '确定要重置吗？',
-      message: '这将清除当前的所有编辑内容（包括本地缓存），恢复到初始示例数据。\n此操作无法撤销！',
+      title: t('modal.reset_confirm_title'),
+      message: t('modal.reset_confirm_message'),
       type: 'warning',
-      confirmText: '确定重置',
+      confirmText: t('modal.reset_btn'),
       onConfirm: () => {
         localStorage.removeItem('resumeData');
         localStorage.removeItem('resumeTemplate');
         localStorage.removeItem('resumeColor');
 
-        setResumeData(initialResumeState);
+        const initialState = i18n.language.startsWith('en') ? initialResumeStateEn : initialResumeState;
+        setResumeData(initialState);
         setTemplate('modern');
         setAccentColor('#4f46e5');
 
         // 重置后显示成功提示
         setTimeout(() => {
           showModal({
-            title: '重置成功',
-            message: '已恢复到初始状态。',
-            type: 'success'
+            title: t('modal.reset_success_title'),
+            message: t('modal.reset_success_message'),
+            type: 'success',
+            confirmText: t('modal.known')
           });
         }, 300);
       }
     });
   };
 
+  // 切换语言
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'zh' ? 'en' : 'zh';
+    i18n.changeLanguage(newLang);
+  };
+
   // 预设主题色
   const presetColors = [
-    { name: '靛蓝', color: '#4f46e5' },
-    { name: '紫罗兰', color: '#7c3aed' },
-    { name: '玫红', color: '#db2777' },
-    { name: '深红', color: '#dc2626' },
-    { name: '橙色', color: '#ea580c' },
-    { name: '翠绿', color: '#059669' },
-    { name: '青色', color: '#0891b2' },
-    { name: '深蓝', color: '#2563eb' },
-    { name: '石墨', color: '#374151' },
+    { name: t('app.theme_color') + ' Indigo', color: '#4f46e5' },
+    { name: 'Purple', color: '#7c3aed' },
+    { name: 'Pink', color: '#db2777' },
+    { name: 'Red', color: '#dc2626' },
+    { name: 'Orange', color: '#ea580c' },
+    { name: 'Emerald', color: '#059669' },
+    { name: 'Cyan', color: '#0891b2' },
+    { name: 'Blue', color: '#2563eb' },
+    { name: 'Gray', color: '#374151' },
   ];
 
   const handleImportDocx = async (event) => {
@@ -112,9 +123,10 @@ function App() {
     // 验证文件类型 - mammoth 只支持 .docx 格式
     if (file.name.endsWith('.doc') && !file.name.endsWith('.docx')) {
       showModal({
-        title: '格式不支持',
-        message: '⚠️ 不支持旧版 .doc 格式\n\n请将文件另存为 .docx 格式后再导入。\n\n操作方法：用 Word 打开文件 → 文件 → 另存为 → 选择 ".docx" 格式',
-        type: 'warning'
+        title: t('modal.format_unsupported_title'),
+        message: t('modal.format_unsupported_message'),
+        type: 'warning',
+        confirmText: t('modal.known')
       });
       if (fileInputRef.current) fileInputRef.current.value = '';
       return;
@@ -122,9 +134,10 @@ function App() {
 
     if (!file.name.endsWith('.docx')) {
       showModal({
-        title: '格式错误',
-        message: '请选择 .docx 格式的 Word 文件',
-        type: 'error'
+        title: t('modal.format_error_title'),
+        message: t('modal.format_error_message'),
+        type: 'error',
+        confirmText: t('modal.known')
       });
       if (fileInputRef.current) fileInputRef.current.value = '';
       return;
@@ -352,25 +365,27 @@ function App() {
 
       // 显示导入结果摘要
       const importSummary = [
-        parsedData.personal.fullName ? `姓名: ${parsedData.personal.fullName}` : '',
-        extractedPhoto ? '头像: ✓ 已提取' : `头像: ✗未检测到 (${debugImageInfo})\n   -> 建议: 文档图片格式特殊，请在左侧编辑器"手动上传"`,
-        parsedData.experience.length > 0 ? `工作经历: ${parsedData.experience.length} 条` : '',
-        parsedData.education.length > 0 ? `教育背景: ${parsedData.education.length} 条` : '',
-        parsedData.certifications.length > 0 ? `证书荣誉: ${parsedData.certifications.length} 条` : '',
-        parsedData.skills.length > 0 ? `技能: ${parsedData.skills.length} 项` : ''
+        parsedData.personal.fullName ? `${t('fields.fullName')}: ${parsedData.personal.fullName}` : '',
+        extractedPhoto ? `${t('editor.personal')}: ✓ ${t('modal.import_success_title')}` : `${t('editor.personal')}: ✗ (${debugImageInfo})`,
+        parsedData.experience.length > 0 ? `${t('editor.experience')}: ${parsedData.experience.length}` : '',
+        parsedData.education.length > 0 ? `${t('editor.education')}: ${parsedData.education.length}` : '',
+        parsedData.certifications.length > 0 ? `${t('editor.certifications')}: ${parsedData.certifications.length}` : '',
+        parsedData.skills.length > 0 ? `${t('editor.skills')}: ${parsedData.skills.length}` : ''
       ].filter(Boolean).join('\n');
 
       showModal({
-        title: '导入成功',
-        message: `✅ 简历导入成功！\n\n已识别：\n${importSummary}\n\n请检查并补充详细信息。`,
-        type: 'success'
+        title: t('modal.import_success_title'),
+        message: t('modal.import_success_message', { summary: importSummary }),
+        type: 'success',
+        confirmText: t('modal.known')
       });
     } catch (error) {
       console.error('导入失败:', error);
       showModal({
-        title: '导入失败',
-        message: `错误: ${error.message || '未知错误'}\n\n请尝试：\n1. 确保文件是有效的 .docx 格式\n2. 尝试用 Word 重新保存文件\n3. 检查文件是否损坏`,
-        type: 'error'
+        title: t('modal.import_fail_title'),
+        message: `${error.message || 'Error'}\n\n1. .docx\n2. Word\n3. File check`, // 简化错误信息，或进一步翻译
+        type: 'error',
+        confirmText: t('modal.known')
       });
     } finally {
       setIsImporting(false);
@@ -405,7 +420,7 @@ function App() {
   };
 
   const handleDownloadDocx = () => {
-    exportToDocx(resumeData);
+    exportToDocx(resumeData, t);
   };
 
   const updatePersonal = (field, value) => {
@@ -432,42 +447,42 @@ function App() {
         <header className="editor-header">
           {/* 第一行：标题 + 操作按钮 */}
           <div className="header-row-top">
-            <h1>简历CLub</h1>
+            <h1>{t('app.title')}</h1>
             <div className="header-actions">
               <button
-                onClick={handleReset}
-                className="btn btn-ghost text-xs text-gray-400 hover:text-red-500 mr-2"
-                title="清除缓存并恢复默认"
+                onClick={toggleLanguage}
+                className="btn btn-ghost btn-icon-only text-gray-400 hover:text-white mr-2"
+                title="Switch Language"
               >
-                重置
+                <Globe size={18} />
               </button>
 
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isImporting}
-                className="btn btn-secondary flex gap-2"
-                title="导入 Word 简历"
+                className="btn btn-secondary flex gap-2 px-3"
+                title={t('app.import')}
               >
                 <Upload size={16} />
-                <span>{isImporting ? '导入中...' : '导入'}</span>
+                <span className="hidden sm:inline">{t('app.import')}</span>
               </button>
 
               <button
                 onClick={handleDownloadDocx}
-                className="btn btn-secondary flex gap-2"
-                title="下载可编辑的 Word 文档"
+                className="btn btn-secondary flex gap-2 px-3"
+                title={t('app.download_word')}
               >
                 <FileDown size={16} />
-                <span>Word</span>
+                <span className="hidden sm:inline">Word</span>
               </button>
 
               <button
                 onClick={handleDownloadPDF}
                 disabled={isExporting}
-                className="btn btn-primary flex gap-2"
+                className="btn btn-primary flex gap-2 px-3"
               >
                 <Download size={16} />
-                <span>{isExporting ? '导出中...' : 'PDF'}</span>
+                <span className="hidden sm:inline">PDF</span>
               </button>
             </div>
           </div>
@@ -475,27 +490,27 @@ function App() {
           {/* 第二行：模板选择器 */}
           <div className="template-switcher">
             {[
-              { id: 'modern', name: '现代', icon: Monitor },
-              { id: 'classic', name: '经典', icon: FileText },
-              { id: 'sidebar', name: '侧栏', icon: Columns },
-              { id: 'creative', name: '创意', icon: Palette },
-              { id: 'minimal', name: '极简', icon: Type },
-            ].map(t => (
+              { id: 'modern', name: 'modern', icon: Monitor },
+              { id: 'classic', name: 'classic', icon: FileText },
+              { id: 'sidebar', name: 'sidebar', icon: Columns },
+              { id: 'creative', name: 'creative', icon: Palette },
+              { id: 'minimal', name: 'minimal', icon: Type },
+            ].map(tItem => (
               <button
-                key={t.id}
-                onClick={() => setTemplate(t.id)}
-                className={`template-btn ${template === t.id ? 'active' : ''}`}
-                title={t.name}
+                key={tItem.id}
+                onClick={() => setTemplate(tItem.id)}
+                className={`template-btn ${template === tItem.id ? 'active' : ''}`}
+                title={t(`app.template.${tItem.name}`)}
               >
-                <t.icon size={16} />
-                <span>{t.name}</span>
+                <tItem.icon size={16} />
+                <span>{t(`app.template.${tItem.name}`)}</span>
               </button>
             ))}
           </div>
 
           {/* 第三行：颜色选择器 */}
           <div className="color-picker-section">
-            <span className="color-picker-label">主题色：</span>
+            <span className="color-picker-label">{t('app.theme_color')}</span>
             <div className="color-picker-options">
               {presetColors.map(c => (
                 <button
@@ -524,6 +539,17 @@ function App() {
             setResumeData={setResumeData}
           />
         </div>
+
+        <footer className="editor-footer">
+          <button
+            onClick={handleReset}
+            className="btn btn-ghost text-xs text-gray-400 hover:text-red-500 w-full justify-center"
+            title={t('app.reset')}
+          >
+            <RotateCcw size={14} />
+            <span>{t('app.reset')}</span>
+          </button>
+        </footer>
       </aside>
 
       {/* Preview Area */}

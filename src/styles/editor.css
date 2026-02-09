@@ -287,3 +287,14 @@ select.form-input option {
 .sortable-item[data-dragging="true"] {
     opacity: 0.5;
 }
+
+/* ========== FOOTER ========== */
+.editor-footer {
+    padding: 1rem 1.25rem;
+    background: var(--color-bg-card);
+    border-top: 1px solid var(--color-border);
+    margin-top: auto;
+    /* Ensures it stays at the bottom */
+    display: flex;
+    justify-content: center;
+}

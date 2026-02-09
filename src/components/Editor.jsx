@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Plus, Trash2, ChevronDown, ChevronUp, Camera, X, GripVertical } from 'lucide-react';
 import {
     DndContext,
@@ -65,6 +66,7 @@ const SkillsInput = ({ initialSkills, onUpdate }) => {
 };
 
 const Editor = ({ data, updatePersonal, setResumeData }) => {
+    const { t } = useTranslation();
     const [activeSection, setActiveSection] = useState('personal');
     const photoInputRef = useRef(null);
 
@@ -236,7 +238,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
 
             {/* Personal Section */}
             <section className="editor-section">
-                <SectionHeader title="个人信息" sectionKey="personal" />
+                <SectionHeader title={t('editor.personal')} sectionKey="personal" />
 
                 {activeSection === 'personal' && (
                     <div className="editor-form-grid">
@@ -270,13 +272,13 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                                         className="photo-upload-btn"
                                     >
                                         <Camera size={24} />
-                                        <span>上传头像</span>
+                                        <span>{t('editor.upload_photo')}</span>
                                     </button>
                                 )}
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="form-label">姓名</label>
+                            <label className="form-label">{t('fields.fullName')}</label>
                             <input
                                 type="text"
                                 value={data.personal.fullName}
@@ -285,7 +287,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                             />
                         </div>
                         <div className="form-group">
-                            <label className="form-label">职位/头衔</label>
+                            <label className="form-label">{t('fields.title')}</label>
                             <input
                                 type="text"
                                 value={data.personal.title}
@@ -295,7 +297,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                         </div>
                         <div className="form-row">
                             <div>
-                                <label className="form-label">邮箱</label>
+                                <label className="form-label">{t('fields.email')}</label>
                                 <input
                                     type="text"
                                     value={data.personal.email}
@@ -304,7 +306,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                                 />
                             </div>
                             <div>
-                                <label className="form-label">电话</label>
+                                <label className="form-label">{t('fields.phone')}</label>
                                 <input
                                     type="text"
                                     value={data.personal.phone}
@@ -314,7 +316,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                             </div>
                         </div>
                         <div>
-                            <label className="form-label">所在地</label>
+                            <label className="form-label">{t('fields.location')}</label>
                             <input
                                 type="text"
                                 value={data.personal.location}
@@ -324,17 +326,17 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                         </div>
                         <div className="form-row form-row-3">
                             <div>
-                                <label className="form-label">城市</label>
+                                <label className="form-label">{t('fields.location')}</label>
                                 <input
                                     type="text"
                                     value={data.personal.city || ''}
                                     onChange={(e) => updatePersonal('city', e.target.value)}
                                     className="form-input"
-                                    placeholder="北京"
+                                    placeholder="Beijing"
                                 />
                             </div>
                             <div>
-                                <label className="form-label">年龄</label>
+                                <label className="form-label">{t('fields.age')}</label>
                                 <input
                                     type="text"
                                     value={data.personal.age || ''}
@@ -344,30 +346,30 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                                 />
                             </div>
                             <div>
-                                <label className="form-label">性别</label>
+                                <label className="form-label">{t('fields.gender')}</label>
                                 <select
                                     value={data.personal.gender || ''}
                                     onChange={(e) => updatePersonal('gender', e.target.value)}
                                     className="form-input"
                                 >
-                                    <option value="">请选择</option>
-                                    <option value="男">男</option>
-                                    <option value="女">女</option>
+                                    <option value="">Select</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
                             </div>
                         </div>
                         <div>
-                            <label className="form-label">期望薪资</label>
+                            <label className="form-label">{t('fields.expectedSalary')}</label>
                             <input
                                 type="text"
                                 value={data.personal.expectedSalary || ''}
                                 onChange={(e) => updatePersonal('expectedSalary', e.target.value)}
                                 className="form-input"
-                                placeholder="15-20K、面议"
+                                placeholder="15-20K"
                             />
                         </div>
                         <div>
-                            <label className="form-label">个人简介</label>
+                            <label className="form-label">{t('editor.summary')}</label>
                             <textarea
                                 rows={4}
                                 value={data.personal.summary}
@@ -383,7 +385,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
             <section className="editor-section">
                 <div className="section-header" onClick={() => toggleSection('experience')}>
                     <div className="flex items-center gap-2">
-                        <h3>工作经历</h3>
+                        <h3>{t('editor.experience')}</h3>
                         {activeSection === 'experience' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                     </div>
                     <button onClick={(e) => { e.stopPropagation(); addExperience(); }} className="btn-icon bg-[var(--color-studio-panel)] hover:bg-[var(--color-studio-border)]">
@@ -413,7 +415,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                                             <div className="flex flex-col gap-3">
                                                 <input
                                                     type="text"
-                                                    placeholder="公司名称"
+                                                    placeholder={t('fields.company')}
                                                     value={exp.company}
                                                     onChange={(e) => handleExpChange(exp.id, 'company', e.target.value)}
                                                     className="form-input font-bold"
@@ -421,21 +423,21 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                                                 <div className="form-row">
                                                     <input
                                                         type="text"
-                                                        placeholder="职位"
+                                                        placeholder={t('fields.position')}
                                                         value={exp.role}
                                                         onChange={(e) => handleExpChange(exp.id, 'role', e.target.value)}
                                                         className="form-input"
                                                     />
                                                     <input
                                                         type="text"
-                                                        placeholder="时间段"
+                                                        placeholder={t('fields.date')}
                                                         value={exp.date}
                                                         onChange={(e) => handleExpChange(exp.id, 'date', e.target.value)}
                                                         className="form-input text-sm"
                                                     />
                                                 </div>
                                                 <textarea
-                                                    placeholder="工作描述"
+                                                    placeholder={t('fields.description')}
                                                     rows={3}
                                                     value={exp.description}
                                                     onChange={(e) => handleExpChange(exp.id, 'description', e.target.value)}
@@ -455,7 +457,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
             <section className="editor-section">
                 <div className="section-header" onClick={() => toggleSection('projects')}>
                     <div className="flex items-center gap-2">
-                        <h3>项目经历</h3>
+                        <h3>{t('editor.projects')}</h3>
                         {activeSection === 'projects' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                     </div>
                     <button onClick={(e) => { e.stopPropagation(); addProject(); }} className="btn-icon bg-[var(--color-studio-panel)] hover:bg-[var(--color-studio-border)]">
@@ -485,7 +487,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                                             <div className="flex flex-col gap-3">
                                                 <input
                                                     type="text"
-                                                    placeholder="项目名称"
+                                                    placeholder={t('fields.name')}
                                                     value={project.name}
                                                     onChange={(e) => handleProjectChange(project.id, 'name', e.target.value)}
                                                     className="form-input font-bold"
@@ -493,21 +495,21 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                                                 <div className="form-row">
                                                     <input
                                                         type="text"
-                                                        placeholder="担任角色"
+                                                        placeholder={t('fields.role')}
                                                         value={project.role}
                                                         onChange={(e) => handleProjectChange(project.id, 'role', e.target.value)}
                                                         className="form-input"
                                                     />
                                                     <input
                                                         type="text"
-                                                        placeholder="时间"
+                                                        placeholder={t('fields.date')}
                                                         value={project.date}
                                                         onChange={(e) => handleProjectChange(project.id, 'date', e.target.value)}
                                                         className="form-input text-sm"
                                                     />
                                                 </div>
                                                 <textarea
-                                                    placeholder="项目描述"
+                                                    placeholder={t('fields.description')}
                                                     rows={3}
                                                     value={project.description}
                                                     onChange={(e) => handleProjectChange(project.id, 'description', e.target.value)}
@@ -515,7 +517,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                                                 />
                                                 <input
                                                     type="text"
-                                                    placeholder="技术栈"
+                                                    placeholder="Tech Stack"
                                                     value={project.techStack || ''}
                                                     onChange={(e) => handleProjectChange(project.id, 'techStack', e.target.value)}
                                                     className="form-input text-sm"
@@ -534,14 +536,14 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
             <section className="editor-section">
                 <div className="section-header" onClick={() => toggleSection('education')}>
                     <div className="flex items-center gap-2">
-                        <h3>教育经历</h3>
+                        <h3>{t('editor.education')}</h3>
                         {activeSection === 'education' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                     </div>
                     <button onClick={(e) => {
                         e.stopPropagation();
                         setResumeData(prev => ({
                             ...prev,
-                            education: [{ id: Date.now(), school: '新学校', degree: '学历/学位', date: '时间段' }, ...prev.education]
+                            education: [{ id: Date.now(), school: 'Harvard University', degree: 'Computer Science', date: '2019-2023' }, ...prev.education]
                         }))
                     }} className="btn-icon bg-[var(--color-studio-panel)] hover:bg-[var(--color-studio-border)]">
                         <Plus size={16} />
@@ -575,7 +577,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                                             <div className="flex flex-col gap-3">
                                                 <input
                                                     type="text"
-                                                    placeholder="学校名称"
+                                                    placeholder={t('fields.school')}
                                                     value={edu.school}
                                                     onChange={(e) => {
                                                         setResumeData(prev => ({
@@ -588,7 +590,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                                                 <div className="form-row">
                                                     <input
                                                         type="text"
-                                                        placeholder="学历/学位"
+                                                        placeholder={t('fields.degree')}
                                                         value={edu.degree}
                                                         onChange={(e) => {
                                                             setResumeData(prev => ({
@@ -600,7 +602,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                                                     />
                                                     <input
                                                         type="text"
-                                                        placeholder="时间段"
+                                                        placeholder={t('fields.date')}
                                                         value={edu.date}
                                                         onChange={(e) => {
                                                             setResumeData(prev => ({
@@ -625,7 +627,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
             <section className="editor-section">
                 <div className="section-header" onClick={() => toggleSection('certifications')}>
                     <div className="flex items-center gap-2">
-                        <h3>证书荣誉</h3>
+                        <h3>{t('editor.certifications')}</h3>
                         {activeSection === 'certifications' ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                     </div>
                     <button onClick={(e) => { e.stopPropagation(); addCertification(); }} className="btn-icon bg-[var(--color-studio-panel)] hover:bg-[var(--color-studio-border)]">
@@ -655,7 +657,7 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                                             <div className="flex flex-col gap-3">
                                                 <input
                                                     type="text"
-                                                    placeholder="证书/荣誉名称"
+                                                    placeholder={t('fields.certName')}
                                                     value={cert.name}
                                                     onChange={(e) => handleCertChange(cert.id, 'name', e.target.value)}
                                                     className="form-input font-bold"
@@ -663,14 +665,14 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
                                                 <div className="form-row">
                                                     <input
                                                         type="text"
-                                                        placeholder="颁发机构"
+                                                        placeholder={t('fields.issuer')}
                                                         value={cert.issuer || ''}
                                                         onChange={(e) => handleCertChange(cert.id, 'issuer', e.target.value)}
                                                         className="form-input"
                                                     />
                                                     <input
                                                         type="text"
-                                                        placeholder="获得时间"
+                                                        placeholder={t('fields.date')}
                                                         value={cert.date}
                                                         onChange={(e) => handleCertChange(cert.id, 'date', e.target.value)}
                                                         className="form-input text-sm"
@@ -688,11 +690,11 @@ const Editor = ({ data, updatePersonal, setResumeData }) => {
 
             {/* Skills Section */}
             <section className="editor-section">
-                <SectionHeader title="专业技能" sectionKey="skills" />
+                <SectionHeader title={t('editor.skills')} sectionKey="skills" />
                 {activeSection === 'skills' && (
                     <div className="editor-form-grid">
                         <div className="form-group">
-                            <label className="form-label">技能列表 (逗号分隔)</label>
+                            <label className="form-label">{t('fields.skillName')}</label>
                             <SkillsInput
                                 initialSkills={data.skills}
                                 onUpdate={(newSkills) => setResumeData(prev => ({ ...prev, skills: newSkills }))}

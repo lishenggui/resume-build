@@ -23,16 +23,30 @@ const COMMON_SKILLS = [
     '英语', '日语', '沟通能力', '团队协作', '领导力', '产品设计', '原型设计'
 ];
 
+// 辅助函数：判断是否为章节标题
+function isSectionHeader(line, keywords) {
+    // 标题通常较短
+    if (line.length > 40) return false;
+    // 标题通常不包含冒号（除非是 Key: Value 格式，也不算章节标题）
+    // 但有些标题可能是 "Skills:"
+    // 标题通常不以符号开头（如 bullet）
+    if (/^[•·◆\-]/.test(line)) return false;
+
+    const lowerLine = line.toLowerCase();
+    return keywords.some(kw => lowerLine.includes(kw.toLowerCase()));
+}
+
 // 辅助函数：查找下一个 section 的索引
 function findNextSectionIndex(lines, startIndex) {
     const sectionKeywords = [
         '个人简介', '简介', '工作经历', '工作经验', '项目经历', '项目经验', '教育背景',
-        '教育经历', '技能', '专业技能', '证书', '荣誉', '获奖', '奖项', '资质认证', '自我评价',
-        'profile', 'experience', 'education', 'skills', 'awards', 'certifications', 'honors'
+        '教育经历', '技能', '专业技能', '证书', '荣誉', '获奖', '奖项', '资质认证', '自我评价', '个人总结',
+        'profile', 'experience', 'education', 'skills', 'awards', 'certifications', 'honors',
+        'projects', 'project experience', 'project', '技能特长'
     ];
 
     for (let i = startIndex; i < lines.length; i++) {
-        if (sectionKeywords.some(kw => lines[i].toLowerCase().includes(kw.toLowerCase()))) {
+        if (isSectionHeader(lines[i], sectionKeywords)) {
             return i;
         }
     }
@@ -76,10 +90,8 @@ function extractTitle(lines, text) {
 // 提取工作经历（不含项目经历）
 function extractExperience(lines) {
     const experience = [];
-    const expKeywords = ['工作经历', '工作经验', 'work experience', 'work history', '职业经历', '实习经历'];
-    const expIndex = lines.findIndex(line =>
-        expKeywords.some(kw => line.toLowerCase().includes(kw.toLowerCase()))
-    );
+    const expKeywords = ['工作经历', '工作经验', 'work experience', 'work history', '职业经历', '实习经历', 'experience'];
+    const expIndex = lines.findIndex(line => isSectionHeader(line, expKeywords));
 
     if (expIndex === -1) return [];
 
@@ -215,9 +227,7 @@ function extractExperience(lines) {
 function extractEducation(lines) {
     const education = [];
     const eduKeywords = ['教育背景', '教育经历', '学历', 'education', '学习经历', '毕业院校', '学校'];
-    const eduIndex = lines.findIndex(line =>
-        eduKeywords.some(kw => line.toLowerCase().includes(kw.toLowerCase()))
-    );
+    const eduIndex = lines.findIndex(line => isSectionHeader(line, eduKeywords));
 
     if (eduIndex === -1) return [];
 
@@ -358,10 +368,8 @@ function extractEducation(lines) {
 
 // 提取技能
 function extractSkills(lines) {
-    const skillKeywords = ['专业技能', '技能', '技术栈', 'skills', '擅长', '熟练掌握', '技术能力', '核心能力'];
-    const skillIndex = lines.findIndex(line =>
-        skillKeywords.some(kw => line.toLowerCase().includes(kw.toLowerCase()))
-    );
+    const skillKeywords = ['专业技能', '技能', '技术栈', 'skills', '擅长', '熟练掌握', '技术能力', '核心能力', '技能特长'];
+    const skillIndex = lines.findIndex(line => isSectionHeader(line, skillKeywords));
 
     if (skillIndex !== -1) {
         const skillEndIndex = findNextSectionIndex(lines, skillIndex + 1);
@@ -449,15 +457,14 @@ function extractSkills(lines) {
 // 提取项目经历
 function extractProjects(lines) {
     const projects = [];
-    const projKeywords = ['项目经历', '项目经验', '项目介绍', 'projects', 'project experience'];
-    const projIndex = lines.findIndex(line =>
-        projKeywords.some(kw => line.toLowerCase().includes(kw.toLowerCase()))
-    );
+    const projKeywords = ['项目经历', '项目经验', '项目介绍', 'projects', 'project experience', 'project'];
+    const projIndex = lines.findIndex(line => isSectionHeader(line, projKeywords));
 
     if (projIndex === -1) return [];
 
     const projEndIndex = findNextSectionIndex(lines, projIndex + 1);
     const projLines = lines.slice(projIndex + 1, projEndIndex);
+
     const datePattern = /(\d{4})(?:\s*[年./-]\s*(\d{1,2}))?[月]?\s*(?:[-–至到~—]|\s+-\s+)\s*(?:(\d{4})(?:\s*[年./-]\s*(\d{1,2}))?[月]?|至今|现在|present)?/i;
     let currentProj = null;
 
@@ -466,19 +473,29 @@ function extractProjects(lines) {
         const dateMatch = line.match(datePattern);
 
         // 检测项目名称行（通常是较短的行，可能包含项目关键词）
-        const isProjectName = line.length < 40 && !dateMatch &&
+        const isBulletLine = /^[◆]/.test(line);
+        const cleanLineForCheck = line.replace(/^[•·◆\-\s]+/, ''); // 清理开头符号
+        const isProjectName = isBulletLine || (line.length < 50 && !dateMatch &&
             (line.includes('项目') || line.includes('系统') || line.includes('平台') ||
-                line.includes('APP') || line.includes('网站') || /^[A-Z]/.test(line));
+                line.includes('APP') || line.includes('网站') || /^[A-Z]/.test(cleanLineForCheck)));
 
-        if (dateMatch) {
+        if (dateMatch || isBulletLine) {
             if (currentProj) {
                 projects.push(currentProj);
             }
-            const startDate = dateMatch[1] + (dateMatch[2] ? '.' + dateMatch[2].padStart(2, '0') : '');
-            const endDate = dateMatch[3] ? (dateMatch[3] + (dateMatch[4] ? '.' + dateMatch[4].padStart(2, '0') : '')) : '至今';
-            let remaining = line.replace(datePattern, '')
-                .replace(/^[.。,，\-—|｜]+/, '') // 移除开头的分隔符
-                .trim();
+
+            let startDate = '';
+            let endDate = '';
+            let remaining = line;
+
+            if (dateMatch) {
+                startDate = dateMatch[1] + (dateMatch[2] ? '.' + dateMatch[2].padStart(2, '0') : '');
+                endDate = dateMatch[3] ? (dateMatch[3] + (dateMatch[4] ? '.' + dateMatch[4].padStart(2, '0') : '')) : '至今';
+                remaining = line.replace(datePattern, '');
+            }
+
+            // 进一步清理剩余文本
+            remaining = remaining.replace(/^[.。,，\-—|｜◆•·\s]+/, '').trim();
 
             let name = '';
             let role = '';
@@ -486,6 +503,12 @@ function extractProjects(lines) {
             // 1. 优先尝试管道符分隔
             if (/\||｜/.test(remaining)) {
                 const parts = remaining.split(/[|｜]/).map(p => p.trim()).filter(p => p);
+
+                // 如果是原来的格式： Date | Name | Role，Date已经被去掉了，所以剩下 Name | Role
+                // 或者 Date pattern 没匹配到，但是是 ◆ Date | Name | Role
+                // 需要智能判断 parts 里的内容
+
+                // 暂时假设剩下的是 Name | Role
                 if (parts.length >= 2) {
                     name = parts[0];
                     role = parts[1];
@@ -500,6 +523,23 @@ function extractProjects(lines) {
                 if (spaceParts.length >= 2) {
                     name = spaceParts[0];
                     role = spaceParts[1];
+                    // 如果 dateMatch 没匹配到，但是第一段看起来像日期
+                    if (!dateMatch && /^20\d{2}/.test(name)) {
+                        // 可能是漏网的日期
+                        // 简单处理，不强求提取日期了，把这部分作为时间或者名字都行
+                    }
+                }
+            }
+
+            // 修复：如果之前没提取到日期，但这是bullet line，尝试从 parts 里找日期？
+            // 简单起见，如果这里没提取到日期，就留空，用户可以在界面填
+            if (!startDate && !endDate) {
+                // 尝试在 name 中寻找类似日期的字符串 (2020.01 - 2021.01)
+                const looseDate = name.match(/(\d{4}[./-]\d{1,2})\s*-\s*(\d{4}[./-]\d{1,2}|至今|Present)/i);
+                if (looseDate) {
+                    startDate = looseDate[1];
+                    endDate = looseDate[2];
+                    name = name.replace(looseDate[0], '').trim();
                 }
             }
 
@@ -513,7 +553,7 @@ function extractProjects(lines) {
                 role: role,
                 startDate: startDate,
                 endDate: endDate.toLowerCase().includes('至今') || endDate.includes('现在') ? '至今' : endDate,
-                date: `${startDate} - ${endDate}`, // 合并时间字段
+                date: startDate ? `${startDate} - ${endDate}` : '',
                 description: '',
                 techStack: ''
             };
@@ -756,7 +796,7 @@ export function parseDocxContent(text) {
         }
     }
     let summary = '';
-    const summaryKeywords = ['个人简介', '简介', '自我介绍', '个人介绍', 'profile', 'summary', '关于我', '自我评价'];
+    const summaryKeywords = ['个人简介', '简介', '自我介绍', '个人介绍', 'profile', 'summary', '关于我', '自我评价', '个人总结'];
     const summaryIndex = lines.findIndex(line =>
         summaryKeywords.some(kw => line.toLowerCase().includes(kw.toLowerCase()))
     );

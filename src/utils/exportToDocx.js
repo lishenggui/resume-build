@@ -2,7 +2,7 @@
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, ImageRun } from "docx";
 import { saveAs } from "file-saver";
 
-export const exportToDocx = async (data) => {
+export const exportToDocx = async (data, t) => {
     const { personal, experience, projects, education, skills, certifications } = data;
 
 
@@ -130,8 +130,8 @@ export const exportToDocx = async (data) => {
         personal.email,
         personal.phone,
         personal.city,
-        personal.age ? `${personal.age} 岁` : '',
-        personal.experience ? `${personal.experience} 经验` : ''
+        personal.age ? `${personal.age} ${t ? (t('fields.age_unit') || '') : ''}` : '', // Handle age unit if needed, specifically asked for i18n
+        personal.experience ? `${personal.experience} ${t ? (t('fields.years_exp') || '') : ''}` : ''
     ].filter(Boolean).join("  |  ");
 
     sections.push(
@@ -163,7 +163,7 @@ export const exportToDocx = async (data) => {
         sections.push(
             new Paragraph({
                 children: [
-                    new TextRun({ text: `期望薪资: ${personal.expectedSalary} `, size: 20, bold: true })
+                    new TextRun({ text: `${t ? t('fields.expectedSalary') : '期望薪资'}: ${personal.expectedSalary} `, size: 20, bold: true })
                 ],
                 alignment: AlignmentType.CENTER,
                 spacing: { after: 200 },
@@ -173,7 +173,7 @@ export const exportToDocx = async (data) => {
 
     // --- 2. 个人简介 ---
     if (personal.summary) {
-        sections.push(createSectionTitle("个人简介"));
+        sections.push(createSectionTitle(t ? t('editor.summary') : "个人简介"));
         sections.push(new Paragraph({
             children: [new TextRun({ text: personal.summary, size: 22 })],
             spacing: { line: 240, after: 200 }
@@ -182,10 +182,10 @@ export const exportToDocx = async (data) => {
 
     // --- 3. 工作经历 ---
     if (experience && experience.length > 0) {
-        sections.push(createSectionTitle("工作经历"));
+        sections.push(createSectionTitle(t ? t('editor.experience') : "工作经历"));
         experience.forEach(exp => {
             // 格式：◆ 时间   公司   职位
-            const date = exp.date || '至今';
+            const date = exp.date || (t ? t('common.present') : '至今');
             const company = exp.company || '';
             const role = exp.role || '';
 
@@ -210,7 +210,7 @@ export const exportToDocx = async (data) => {
 
     // --- 4. 项目经历 ---
     if (projects && projects.length > 0) {
-        sections.push(createSectionTitle("项目经历"));
+        sections.push(createSectionTitle(t ? t('editor.projects') : "项目经历"));
         projects.forEach(proj => {
             // 格式：◆ 时间   项目名称   角色
             const date = proj.date || ''; // 注意项目数据里可能没有直接的 date 字段，如果有就用
@@ -228,7 +228,7 @@ export const exportToDocx = async (data) => {
 
             if (proj.techStack) {
                 sections.push(new Paragraph({
-                    text: `技术栈: ${proj.techStack} `,
+                    text: `${t ? (t('fields.techStack') || '技术栈') : '技术栈'}: ${proj.techStack} `,
                     indent: { left: 800 },
                     spacing: { line: 240 }
                 }));
@@ -251,7 +251,7 @@ export const exportToDocx = async (data) => {
 
     // --- 5. 教育背景 ---
     if (education && education.length > 0) {
-        sections.push(createSectionTitle("教育背景"));
+        sections.push(createSectionTitle(t ? t('editor.education') : "教育背景"));
         education.forEach(edu => {
             // 格式：时间   学校   专业   学历
             const parts = [
@@ -268,7 +268,7 @@ export const exportToDocx = async (data) => {
 
     // --- 6. 技能列表 ---
     if (skills && skills.length > 0) {
-        sections.push(createSectionTitle("专业技能"));
+        sections.push(createSectionTitle(t ? t('editor.skills') : "专业技能"));
         // 模仿模板：使用 ◆ 列表
         skills.forEach(skill => {
             sections.push(createBulletItem(skill, false));
@@ -278,7 +278,7 @@ export const exportToDocx = async (data) => {
 
     // --- 7. 证书 ---
     if (certifications && certifications.length > 0) {
-        sections.push(createSectionTitle("荣誉证书"));
+        sections.push(createSectionTitle(t ? t('editor.certifications') : "荣誉证书"));
         const certList = certifications.map(c => {
             const parts = [c.name, c.date, c.issuer].filter(Boolean);
             return parts.join(' - ');
