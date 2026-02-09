@@ -1,5 +1,5 @@
 {
-    "name": "resume-builder",
+    "name": "resume-build",
     "compatibility_date": "2026-02-06",
     "assets": {
         "directory": "./dist"
