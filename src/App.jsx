@@ -7,6 +7,7 @@ import { initialResumeState } from './data/initialState';
 import { parseDocxContent } from './utils/docxParser';
 import Editor from './components/Editor';
 import Preview from './components/Preview';
+import Modal from './components/Modal';
 
 import { exportToDocx } from './utils/exportToDocx';
 
@@ -26,6 +27,30 @@ function App() {
   const componentRef = useRef(null);
   const fileInputRef = useRef(null);
 
+  // 弹窗状态管理
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'info', // info, warning, error, success
+    onConfirm: null,
+    confirmText: '确定'
+  });
+
+  // 辅助函数：关闭弹窗
+  const closeModal = () => {
+    setModalConfig(prev => ({ ...prev, isOpen: false }));
+  };
+
+  // 辅助函数：显示提示
+  const showModal = (options) => {
+    setModalConfig({
+      isOpen: true,
+      onClose: closeModal,
+      ...options
+    });
+  };
+
   // 监听数据变化，自动保存到 localStorage
   React.useEffect(() => {
     localStorage.setItem('resumeData', JSON.stringify(resumeData));
@@ -41,15 +66,30 @@ function App() {
 
   // 重置功能
   const handleReset = () => {
-    if (window.confirm('⚠️ 确定要重置吗？\n\n这将清除当前的所有编辑内容（包括本地缓存），恢复到初始示例数据。\n此操作无法撤销！')) {
-      localStorage.removeItem('resumeData');
-      localStorage.removeItem('resumeTemplate');
-      localStorage.removeItem('resumeColor');
+    showModal({
+      title: '确定要重置吗？',
+      message: '这将清除当前的所有编辑内容（包括本地缓存），恢复到初始示例数据。\n此操作无法撤销！',
+      type: 'warning',
+      confirmText: '确定重置',
+      onConfirm: () => {
+        localStorage.removeItem('resumeData');
+        localStorage.removeItem('resumeTemplate');
+        localStorage.removeItem('resumeColor');
 
-      setResumeData(initialResumeState);
-      setTemplate('modern');
-      setAccentColor('#4f46e5');
-    }
+        setResumeData(initialResumeState);
+        setTemplate('modern');
+        setAccentColor('#4f46e5');
+
+        // 重置后显示成功提示
+        setTimeout(() => {
+          showModal({
+            title: '重置成功',
+            message: '已恢复到初始状态。',
+            type: 'success'
+          });
+        }, 300);
+      }
+    });
   };
 
   // 预设主题色
@@ -71,13 +111,21 @@ function App() {
 
     // 验证文件类型 - mammoth 只支持 .docx 格式
     if (file.name.endsWith('.doc') && !file.name.endsWith('.docx')) {
-      alert('⚠️ 不支持旧版 .doc 格式\n\n请将文件另存为 .docx 格式后再导入。\n\n操作方法：用 Word 打开文件 → 文件 → 另存为 → 选择 ".docx" 格式');
+      showModal({
+        title: '格式不支持',
+        message: '⚠️ 不支持旧版 .doc 格式\n\n请将文件另存为 .docx 格式后再导入。\n\n操作方法：用 Word 打开文件 → 文件 → 另存为 → 选择 ".docx" 格式',
+        type: 'warning'
+      });
       if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
     if (!file.name.endsWith('.docx')) {
-      alert('请选择 .docx 格式的 Word 文件');
+      showModal({
+        title: '格式错误',
+        message: '请选择 .docx 格式的 Word 文件',
+        type: 'error'
+      });
       if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
@@ -312,10 +360,18 @@ function App() {
         parsedData.skills.length > 0 ? `技能: ${parsedData.skills.length} 项` : ''
       ].filter(Boolean).join('\n');
 
-      alert(`✅ 简历导入成功！\n\n已识别：\n${importSummary}\n\n请检查并补充详细信息。`);
+      showModal({
+        title: '导入成功',
+        message: `✅ 简历导入成功！\n\n已识别：\n${importSummary}\n\n请检查并补充详细信息。`,
+        type: 'success'
+      });
     } catch (error) {
       console.error('导入失败:', error);
-      alert(`❌ 导入失败\n\n错误: ${error.message || '未知错误'}\n\n请尝试：\n1. 确保文件是有效的 .docx 格式\n2. 尝试用 Word 重新保存文件\n3. 检查文件是否损坏`);
+      showModal({
+        title: '导入失败',
+        message: `错误: ${error.message || '未知错误'}\n\n请尝试：\n1. 确保文件是有效的 .docx 格式\n2. 尝试用 Word 重新保存文件\n3. 检查文件是否损坏`,
+        type: 'error'
+      });
     } finally {
       setIsImporting(false);
       // 重置 input 以允许再次选择同一文件
@@ -361,6 +417,7 @@ function App() {
 
   return (
     <div className="app-container flex">
+      <Modal {...modalConfig} />
       {/* 隐藏的文件输入 - 仅支持 .docx */}
       <input
         type="file"
