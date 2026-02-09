@@ -251,3 +251,39 @@ select.form-input option {
     background: #dc2626;
     transform: scale(1.1);
 }
+
+/* ========== DRAG & DROP STYLES ========== */
+.sortable-item {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.drag-handle {
+    padding: 0.5rem;
+    color: var(--color-text-muted);
+    cursor: grab;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s;
+    flex-shrink: 0;
+    margin-top: 0.5rem;
+}
+
+.drag-handle:hover {
+    color: var(--color-text-secondary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+    color: var(--color-accent-1);
+}
+
+.sortable-item .item-card {
+    flex: 1;
+}
+
+/* 拖拽时的占位符样式 */
+.sortable-item[data-dragging="true"] {
+    opacity: 0.5;
+}

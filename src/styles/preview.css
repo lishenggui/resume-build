@@ -18,7 +18,7 @@
 .resume-header {
     margin-bottom: 32px;
     padding-bottom: 24px;
-    border-bottom: 3px solid #4f46e5;
+    border-bottom: 3px solid var(--resume-accent, #4f46e5);
     position: relative;
 }
 
@@ -37,7 +37,7 @@
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #4f46e5;
+    border: 3px solid var(--resume-accent, #4f46e5);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -56,7 +56,7 @@
 
 .resume-role {
     font-size: 1.125rem;
-    color: #4f46e5;
+    color: var(--resume-accent, #4f46e5);
     font-weight: 600;
     letter-spacing: 0.02em;
     margin-bottom: 16px;
@@ -109,7 +109,7 @@
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: #4f46e5;
+    color: var(--resume-accent, #4f46e5);
     margin-bottom: 16px;
     padding-bottom: 8px;
     border-bottom: 2px solid #e2e8f0;
@@ -176,6 +176,22 @@
     border: 1px solid #c7d2fe;
 }
 
+/* ========== PROJECT TECH STACK ========== */
+.resume-tech-stack {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-top: 8px;
+    padding: 6px 10px;
+    background: #f8fafc;
+    border-radius: 4px;
+    border-left: 3px solid var(--resume-accent, #4f46e5);
+}
+
+.resume-tech-stack .tech-label {
+    font-weight: 600;
+    color: #475569;
+}
+
 
 /* ========================================
    🎨 THEME VARIATIONS
@@ -188,7 +204,7 @@
 }
 
 .resume-classic .resume-header {
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid var(--resume-accent, #000);
     padding-bottom: 16px;
     margin-bottom: 24px;
 }
@@ -215,7 +231,7 @@
 }
 
 .resume-classic .resume-role {
-    color: #444;
+    color: var(--resume-accent, #444);
     font-size: 1rem;
     font-weight: normal;
     font-style: italic;
@@ -240,8 +256,8 @@
 
 .resume-classic .resume-section-title {
     text-align: center;
-    border-bottom: 1px solid #000;
-    color: #000;
+    border-bottom: 1px solid var(--resume-accent, #000);
+    color: var(--resume-accent, #000);
     font-size: 1rem;
     letter-spacing: 0.1em;
     margin-bottom: 20px;
@@ -339,13 +355,13 @@
 }
 
 .resume-sidebar .resume-role {
-    color: #0f172a;
+    color: var(--resume-accent, #0f172a);
     font-weight: 500;
 }
 
 .resume-sidebar .resume-section-title {
-    color: #0f172a;
-    border-bottom: 2px solid #0f172a;
+    color: var(--resume-accent, #0f172a);
+    border-bottom: 2px solid var(--resume-accent, #0f172a);
 }
 
 /* Fix contact info in sidebar mode to be less intrusive in header or move to sidebar?
@@ -426,7 +442,7 @@
     color: #fff;
     padding: 48px 56px;
     margin-bottom: 40px;
-    border-bottom: 6px solid #f43f5e;
+    border-bottom: 6px solid var(--resume-accent, #f43f5e);
     /* Vibrant Accent */
 }
 
@@ -439,7 +455,7 @@
 }
 
 .resume-creative .resume-role {
-    color: #f43f5e;
+    color: var(--resume-accent, #f43f5e);
     font-size: 1.25rem;
     font-weight: 700;
     letter-spacing: 0.05em;
@@ -485,7 +501,7 @@
     top: 6px;
     width: 10px;
     height: 10px;
-    background: #f43f5e;
+    background: var(--resume-accent, #f43f5e);
     border-radius: 50%;
 }
 
@@ -500,7 +516,7 @@
     border: none;
     border-radius: 0;
     font-weight: 700;
-    box-shadow: 4px 4px 0 #f43f5e;
+    box-shadow: 4px 4px 0 var(--resume-accent, #f43f5e);
     /* Retro shadow */
     transition: transform 0.2s;
 }
@@ -519,13 +535,25 @@
 }
 
 .resume-minimal .resume-header-content {
-    align-items: flex-end;
-    /* Align bottom */
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .resume-minimal .resume-photo {
-    display: none;
-    /* Often minimal resumes skip photo or make it very subtle */
+    /* 极简风格：右上角小巧头像 */
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.resume-minimal .resume-photo img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid #eee;
+    box-shadow: none;
+    filter: grayscale(30%);
+    /* 极简风格的淡化效果 */
 }
 
 .resume-minimal .resume-name {
@@ -538,7 +566,7 @@
 
 .resume-minimal .resume-role {
     font-size: 1rem;
-    color: #666;
+    color: var(--resume-accent, #666);
     font-weight: 400;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -557,10 +585,10 @@
 .resume-minimal .resume-section-title {
     font-size: 0.8rem;
     font-weight: 600;
-    color: #000;
+    color: var(--resume-accent, #000);
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid var(--resume-accent, #000);
     margin-bottom: 24px;
     padding-bottom: 8px;
 }

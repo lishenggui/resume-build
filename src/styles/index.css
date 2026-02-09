@@ -123,71 +123,75 @@ h6 {
 }
 
 /* ========== PREMIUM BUTTONS ========== */
+/* ========== PREMIUM BUTTONS ========== */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    font-size: 0.875rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: none;
+    height: 38px;
+    padding: 0 1.25rem;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
     cursor: pointer;
     gap: 0.5rem;
     white-space: nowrap;
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--color-accent-1), var(--color-accent-2), var(--color-accent-3));
-    background-size: 200% 200%;
+    background: linear-gradient(135deg, var(--color-accent-1), var(--color-accent-2));
     color: white;
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-    animation: gradientShift 3s ease infinite;
-}
-
-@keyframes gradientShift {
-
-    0%,
-    100% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
+    border: none;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    filter: brightness(1.1);
 }
 
 .btn-primary:active {
     transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
 }
 
 .btn-primary:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
+    filter: grayscale(0.5);
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     color: var(--color-text-secondary);
+    backdrop-filter: blur(4px);
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: var(--color-border-hover);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
     color: var(--color-text-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .btn-secondary:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
+    transform: none;
 }
 
 /* ========== APP STRUCTURE ========== */
@@ -297,6 +301,67 @@ h6 {
     background: linear-gradient(135deg, var(--color-accent-1), var(--color-accent-2));
     color: white;
     box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* 颜色选择器 */
+.color-picker-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+}
+
+.color-picker-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.color-picker-options {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.color-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.color-dot:hover {
+    transform: scale(1.15);
+}
+
+.color-dot.active {
+    border-color: var(--color-text-primary);
+    box-shadow: 0 0 0 2px var(--color-bg-card), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.color-input-custom {
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+    overflow: hidden;
+}
+
+.color-input-custom::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.color-input-custom::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
 }
 
 .header-icon {

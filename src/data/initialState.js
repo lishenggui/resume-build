@@ -10,6 +10,7 @@ export const initialResumeState = {
         gender: "男",
         website: "liming-design.cn",
         photo: "",
+        expectedSalary: "",  // 期望薪资
         summary: "拥有6年以用户为中心的数字产品设计经验，注重细节与美学的结合。热衷于通过优雅的设计方案解决复杂问题。具有带领设计团队交付高影响力项目的成功经验。"
     },
     experience: [
@@ -38,5 +39,21 @@ export const initialResumeState = {
     ],
     skills: [
         "Figma", "Adobe Creative Suite", "原型设计", "HTML/CSS", "用户研究", "敏捷开发", "设计系统"
+    ],
+    projects: [],  // 默认为空，导入时才填充
+    certifications: [
+        {
+            id: 1,
+            name: "Google UX Design 专业证书",
+            issuer: "Google",
+            date: "2023"
+        },
+        {
+            id: 2,
+            name: "Adobe Certified Expert",
+            issuer: "Adobe",
+            date: "2022"
+        }
     ]
 };
+
