@@ -375,7 +375,7 @@ function App() {
         <header className="editor-header">
           {/* 第一行：标题 + 操作按钮 */}
           <div className="header-row-top">
-            <h1>简历工作室</h1>
+            <h1>简历CLub</h1>
             <div className="header-actions">
               <button
                 onClick={handleReset}
